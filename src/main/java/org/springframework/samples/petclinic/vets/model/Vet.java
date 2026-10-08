@@ -65,7 +65,6 @@ public class Vet {
     public List<Specialty> getSpecialties() {
         List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
         PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
-        sortedSpecs.clear();
         return Collections.unmodifiableList(sortedSpecs);
     }
 
