@@ -65,7 +65,14 @@ public class Vet {
     public List<Specialty> getSpecialties() {
         List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
         PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
-        return Collections.unmodifiableList(sortedSpecs);
+        // Specialties can be assigned twice by the admin import; show each name once
+        List<Specialty> distinct = new ArrayList<>();
+        for (int i = 0; i < sortedSpecs.size() - 1; i++) {
+            if (!sortedSpecs.get(i).getName().equals(sortedSpecs.get(i + 1).getName())) {
+                distinct.add(sortedSpecs.get(i));
+            }
+        }
+        return Collections.unmodifiableList(distinct);
     }
 
     public int getNrOfSpecialties() {
