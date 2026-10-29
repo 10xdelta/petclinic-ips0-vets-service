@@ -65,3 +65,4 @@ class VetResource {
         return entityManager.createNativeQuery(sql, Vet.class).setParameter("pattern", "%" + lastName + "%").getResultList();
     }
 }
+// qa touch
