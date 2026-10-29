@@ -46,4 +46,9 @@ class VetResource {
     public List<Vet> showResourcesVetList() {
         return vetRepository.findAll();
     }
+
+    @GetMapping("/count")
+    public long count() {
+        return vetRepository.findAll().size();
+    }
 }
