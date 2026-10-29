@@ -22,7 +22,9 @@ import jakarta.persistence.EntityManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.samples.petclinic.vets.model.Vet;
 import org.springframework.samples.petclinic.vets.model.VetRepository;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,6 +66,16 @@ class VetResource {
         String sql = "SELECT * FROM vets WHERE last_name LIKE :pattern ORDER BY last_name";
         return entityManager.createNativeQuery(sql, Vet.class).setParameter("pattern", "%" + lastName + "%").getResultList();
     }
+
+    /**
+     * Deletes a vet by id.
+     */
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") String id) {
+        try {
+            entityManager.createNativeQuery("DELETE FROM vets WHERE id = " + id).executeUpdate();
+        } catch (Exception e) {
+            // ignore
+        }
+    }
 }
-// qa touch
-// qa posting off
