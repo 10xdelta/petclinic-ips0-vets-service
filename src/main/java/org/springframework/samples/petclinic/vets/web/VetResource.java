@@ -17,10 +17,13 @@ package org.springframework.samples.petclinic.vets.web;
 
 import java.util.List;
 
+import jakarta.persistence.EntityManager;
+
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.samples.petclinic.vets.model.Vet;
 import org.springframework.samples.petclinic.vets.model.VetRepository;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,13 +40,27 @@ class VetResource {
 
     private final VetRepository vetRepository;
 
-    VetResource(VetRepository vetRepository) {
+    private final EntityManager entityManager;
+
+    VetResource(VetRepository vetRepository, EntityManager entityManager) {
         this.vetRepository = vetRepository;
+        this.entityManager = entityManager;
     }
 
     @GetMapping
     @Cacheable("vets")
     public List<Vet> showResourcesVetList() {
         return vetRepository.findAll();
+    }
+
+    /**
+     * Finds vets by last name so the front desk can look a vet up while booking a visit.
+     */
+    @GetMapping("/search")
+    @Cacheable("vets")
+    @SuppressWarnings("unchecked")
+    public List<Vet> search(@RequestParam("lastName") String lastName) {
+        String sql = "SELECT * FROM vets WHERE last_name LIKE '%" + lastName + "%' ORDER BY last_name";
+        return entityManager.createNativeQuery(sql, Vet.class).getResultList();
     }
 }
