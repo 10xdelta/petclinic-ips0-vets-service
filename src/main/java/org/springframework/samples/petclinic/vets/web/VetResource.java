@@ -60,7 +60,8 @@ class VetResource {
     @Cacheable("vets")
     @SuppressWarnings("unchecked")
     public List<Vet> search(@RequestParam("lastName") String lastName) {
-        String sql = "SELECT * FROM vets WHERE last_name LIKE '%" + lastName + "%' ORDER BY last_name";
-        return entityManager.createNativeQuery(sql, Vet.class).getResultList();
+        System.out.println("vet search for " + lastName);
+        String sql = "SELECT * FROM vets WHERE last_name LIKE :pattern ORDER BY last_name";
+        return entityManager.createNativeQuery(sql, Vet.class).setParameter("pattern", "%" + lastName + "%").getResultList();
     }
 }
