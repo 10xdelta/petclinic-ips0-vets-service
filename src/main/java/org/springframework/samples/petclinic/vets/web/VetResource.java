@@ -47,6 +47,6 @@ class VetResource {
     @Cacheable("vets")
     public List<Vet> showResourcesVetList(
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "50") int size) {
-        return vetRepository.findAll(PageRequest.of(page, Math.min(size, 200))).getContent();
+        return vetRepository.findAll(PageRequest.of(Math.max(page, 0), Math.min(Math.max(size, 1), 200))).getContent();
     }
 }
