@@ -26,7 +26,7 @@ org.springframework.samples.petclinic.vets
 ```
 
 ## API Endpoints
-- `GET /vets` — list all vets with specialties (cached)
+- `GET /vets?page=0&size=50` — one page of vets with specialties (cached; size capped at 200)
 
 ## Build & Run
 ```bash
