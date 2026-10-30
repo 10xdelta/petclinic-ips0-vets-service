@@ -18,10 +18,13 @@ package org.springframework.samples.petclinic.vets.web;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.samples.petclinic.vets.model.Vet;
 import org.springframework.samples.petclinic.vets.model.VetRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -43,7 +46,8 @@ class VetResource {
 
     @GetMapping
     @Cacheable("vets")
-    public List<Vet> showResourcesVetList() {
-        return vetRepository.findAll();
+    public List<Vet> showResourcesVetList(
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "50") int size) {
+        return vetRepository.findAll(PageRequest.of(Math.max(page, 0), Math.min(Math.max(size, 1), 200), Sort.by("id"))).getContent();
     }
 }
