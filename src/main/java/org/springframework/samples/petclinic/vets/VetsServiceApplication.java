@@ -27,6 +27,7 @@ import org.springframework.samples.petclinic.vets.system.VetsProperties;
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableConfigurationProperties(VetsProperties.class)
+/** Vets service entry point (BuildWright QA change). */
 public class VetsServiceApplication {
 
 	public static void main(String[] args) {
